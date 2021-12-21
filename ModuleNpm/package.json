@@ -1,0 +1,15 @@
+{
+  "name": "modulenpm",
+  "version": "1.0.0",
+  "description": "Belajar Nodejs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "imotD",
+  "license": "ISC",
+  "dependencies": {
+    "validator": "^13.7.0"
+  }
+}
