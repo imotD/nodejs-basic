@@ -46,10 +46,16 @@ const question = ask => {
   });
 };
 
-const saveContact = (nama, email, noHP) => {
-  const data = { nama, email, noHP };
+const loadContact = () => {
   const fileBuffer = fs.readFileSync("data/contact.json", "utf-8");
   const contacts = JSON.parse(fileBuffer);
+  return contacts;
+};
+
+const saveContact = (nama, email, noHP) => {
+  const data = { nama, email, noHP };
+
+  const contacts = loadContact();
 
   const duplikat = contacts.find(data => data.nama === nama);
 
@@ -83,4 +89,12 @@ const saveContact = (nama, email, noHP) => {
   rl.close();
 };
 
-module.exports = { question, saveContact };
+const listContact = () => {
+  const contacts = loadContact();
+  console.log(chalk.blue.inverse.bold("Daftar Contact"));
+  contacts.forEach((contact, i) => {
+    console.log(`${i + 1}. ${contact.nama} - ${contact.noHP}`);
+  });
+};
+
+module.exports = { question, saveContact, listContact };
