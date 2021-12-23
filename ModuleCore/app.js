@@ -1,5 +1,10 @@
 const { demandOption } = require("yargs");
-const { saveContact, listContact } = require("./contacts");
+const {
+  saveContact,
+  listContact,
+  detailContact,
+  deleteContact
+} = require("./contacts");
 const yargs = require("yargs");
 
 yargs
@@ -29,14 +34,42 @@ yargs
   })
   .demandCommand();
 
-yargs
-  .command({
-    command: "list",
-    describe: "Menampilan semua nama & no hp",
-    handler() {
-      listContact();
+yargs.command({
+  command: "list",
+  describe: "Menampilan semua nama & no hp",
+  handler() {
+    listContact();
+  }
+});
+
+yargs.command({
+  command: "detail",
+  describe: "Menampilan data detail berdasarkan nama",
+  builder: {
+    nama: {
+      describe: "Nama Lengkap",
+      demandOption: true,
+      type: "string"
     }
-  })
-  .demandCommand();
+  },
+  handler(argv) {
+    detailContact(argv.nama);
+  }
+});
+
+yargs.command({
+  command: "delete",
+  describe: "Menghapus sebuah contact berdasarkan nama",
+  builder: {
+    nama: {
+      describe: "Nama Lengkap",
+      demandOption: true,
+      type: "string"
+    }
+  },
+  handler(argv) {
+    deleteContact(argv.nama);
+  }
+});
 
 yargs.parse();

@@ -97,4 +97,46 @@ const listContact = () => {
   });
 };
 
-module.exports = { question, saveContact, listContact };
+const detailContact = nama => {
+  const contacts = loadContact();
+  const contact = contacts.find(
+    contact => contact.nama.toLowerCase() === nama.toLowerCase()
+  );
+
+  if (!contact) {
+    console.log(chalk.red.inverse.bold(`${nama} tidak ditemukan!`));
+    return false;
+  }
+
+  console.log(chalk.blue.inverse.bold(`${nama} data ditemukan!`));
+  console.log(contact.nama);
+  console.log(contact.noHP);
+
+  if (contact.email) {
+    console.log(contact.email);
+  }
+};
+
+const deleteContact = nama => {
+  const contacts = loadContact();
+  const newContact = contacts.filter(
+    contact => contact.nama.toLowerCase() !== nama.toLowerCase()
+  );
+
+  if (contacts.length === newContact.length) {
+    console.log(chalk.red.inverse.bold(`${nama} tidak ditemukan!`));
+    return false;   
+  }
+
+  fs.writeFileSync("data/contact.json", JSON.stringify(newContact));
+
+  console.log(chalk.green.inverse.bold(`data ${nama} berhasil di hapus`));
+};
+
+module.exports = {
+  question,
+  saveContact,
+  listContact,
+  detailContact,
+  deleteContact
+};
