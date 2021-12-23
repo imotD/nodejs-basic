@@ -1,5 +1,7 @@
+const chalk = require("chalk");
 const fs = require("fs");
 const readline = require("readline");
+const validator = require("validator");
 
 // * menuliskan string ke file (sync)
 // fs.writeFileSync("test.txt", " Hello World Secara Synchronous");
@@ -49,11 +51,34 @@ const saveContact = (nama, email, noHP) => {
   const fileBuffer = fs.readFileSync("data/contact.json", "utf-8");
   const contacts = JSON.parse(fileBuffer);
 
+  const duplikat = contacts.find(data => data.nama === nama);
+
+  //cek duplikat
+  if (duplikat) {
+    console.log(
+      chalk.red.inverse.bold("Contact sudah terdaftar, gunakan nama lain !")
+    );
+    return false;
+  }
+
+  //cek email
+  if (email) {
+    if (!validator.isEmail(email)) {
+      console.log(chalk.red.inverse.bold("Email tidak valid!"));
+      return false;
+    }
+  }
+  //cek number
+  if (!validator.isMobilePhone(noHP, "id-ID")) {
+    console.log(chalk.red.inverse.bold("Nomor ponsel tidak valid!"));
+    return false;
+  }
+
   contacts.push(data);
 
   fs.writeFileSync("data/contact.json", JSON.stringify(contacts));
 
-  console.log("terimakasih sudah memasukan data.");
+  console.log(chalk.green.inverse.bold("terimakasih sudah memasukan data."));
 
   rl.close();
 };
